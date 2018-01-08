@@ -10,7 +10,7 @@ CSG.prototype.toThreeGeometry = function () {
 	var faces = [];
 	var vertices = [];
 	
-	this.polygons.forEach(function (polygon) {
+	this.toPolygons().forEach(function (polygon) {
 		faces.push(polygon.vertices);
 	});
 	
@@ -66,9 +66,9 @@ CSG.prototype.toThreeGeometry = function () {
 	this.polygons.forEach(function (polygon) {
 		// create a normal and then the faces using the index of similar function
 		var normal = new THREE.Vector3(
-			polygon.plane.normal.x,
-			polygon.plane.normal.y,
-			polygon.plane.normal.z
+			polygon.vertices[0].normal.x,
+			polygon.vertices[0].normal.y,
+			polygon.vertices[0].normal.z
 		);
 		
 		geometry.faces.push(new THREE.Face3(
@@ -77,6 +77,15 @@ CSG.prototype.toThreeGeometry = function () {
 			indexOfSimilar(polygon.vertices[2].pos, vertices),
 			normal
 		));
+		
+		if (polygon.vertices.length > 3) {
+			geometry.faces.push(new THREE.Face3(
+				indexOfSimilar(polygon.vertices[0].pos, vertices),
+				indexOfSimilar(polygon.vertices[2].pos, vertices),
+				indexOfSimilar(polygon.vertices[3].pos, vertices),
+				normal
+			));
+		}
 	});
 	
 	return geometry;
