@@ -15,6 +15,7 @@ CSG.prototype.toThreeGeometry = function () {
 	});
 	
 	function addIfNot (item, array) {
+		// function to add an item to a list unless there is a similar object already there
 		var inList = false;
 		
 		array.forEach(function (element) {
@@ -41,7 +42,7 @@ CSG.prototype.toThreeGeometry = function () {
 		});
 	});
 	
-	// add the vertices to the three.gs geometry
+	// add the vertices to the three.js geometry
 	vertices.forEach(function (vertex) {
 		geometry.vertices.push(new THREE.Vector3(
 			vertex.x,
@@ -50,9 +51,9 @@ CSG.prototype.toThreeGeometry = function () {
 		));
 	});
 	
-	console.log(this);
-	
-	function indexOfSimilar (item, array) {		
+	function indexOfSimilar (item, array) {
+		// indexOf method on arrays checks for an identical item- this function checks for similar
+		
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].x == item.x && array[i].y == item.y && array[i].z == item.z) {
 				return i;
@@ -63,6 +64,7 @@ CSG.prototype.toThreeGeometry = function () {
 	}
 	
 	this.polygons.forEach(function (polygon) {
+		// create a normal and then the faces using the index of similar function
 		var normal = new THREE.Vector3(
 			polygon.plane.normal.x,
 			polygon.plane.normal.y,
